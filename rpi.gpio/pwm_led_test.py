@@ -7,10 +7,10 @@ import time
 import sys
 
 def do_led_things(pin_led):
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setwarnings(False)
-    
+    # setup pin mode
     GPIO.setup(pin_led, GPIO.OUT)
+
+    # setup pwm signal
     pwm = GPIO.PWM(pin_led, 50)
     pwm.start(0)
 
@@ -25,7 +25,6 @@ def do_led_things(pin_led):
     
     except KeyboardInterrupt:
         pwm.stop()
-        GPIO.cleanup()            
 
 if __name__ == "__main__":
     argc = len(sys.argv)
@@ -33,7 +32,15 @@ if __name__ == "__main__":
         print("uso: " + sys.argv[0] + " <led_BCM_pin>")
         exit()
     
+    # init GPIO mode
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+
+    # send pwm signals to the led
     do_led_things(int(sys.argv[1]))
+
+    # cleanup GPIO pin's
+    GPIO.cleanup()
 
     print("\nBye!!")
 
